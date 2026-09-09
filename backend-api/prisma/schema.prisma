@@ -1,0 +1,86 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1. Akun Admin Sekolah
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 2. Data Guru & Tenaga Kependidikan (GTK)
+model Teacher {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  category  String   // "Pimpinan", "Guru Mata Pelajaran", "Bimbingan Konseling", "Tenaga Kependidikan"
+  nip       String   @unique
+  subject   String
+  photo     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 3. Berita & Pengumuman Sekolah
+model News {
+  id            Int      @id @default(autoincrement())
+  title         String
+  category      String   // "KEGIATAN", "PRESTASI", "PENGUMUMAN"
+  categoryColor String   @default("blue")
+  author        String
+  image         String?
+  content       String   @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// 4. Prestasi & Kejuaraan
+model Achievement {
+  id         Int      @id @default(autoincrement())
+  title      String
+  category   String
+  level      String
+  year       String
+  medal      String   // "gold", "silver", "bronze"
+  medalLabel String
+  student    String
+  organizer  String
+  desc       String   @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// 5. Galeri Kegiatan
+model Gallery {
+  id        Int      @id @default(autoincrement())
+  title     String
+  category  String
+  date      String
+  image     String
+  desc      String?   @db.Text
+  date      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 6. Agenda Kegiatan
+model Agenda {
+  id        Int      @id @default(autoincrement())
+  dateDay   String
+  dateMonth String
+  title     String
+  period    String
+  desc      String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
