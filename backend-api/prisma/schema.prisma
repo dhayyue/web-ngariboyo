@@ -65,10 +65,9 @@ model Gallery {
   id        Int      @id @default(autoincrement())
   title     String
   category  String
-  date      String
+  date      DateTime
   image     String
   desc      String?   @db.Text
-  date      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -76,11 +75,26 @@ model Gallery {
 // 6. Agenda Kegiatan
 model Agenda {
   id        Int      @id @default(autoincrement())
-  dateDay   String
-  dateMonth String
+  startDate DateTime
+  endDate   DateTime
   title     String
   period    String
   desc      String   @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// 7. Ekstrakulikuler
+model Extracurricular {
+  id          Int      @id @default(autoincrement())
+  name        String   
+  category    String   
+  coach       String?  
+  schedule    String?  
+  description String?  @db.Text
+  image       String?  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("extracurriculars")
 }
