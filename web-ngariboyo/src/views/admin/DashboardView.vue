@@ -9,6 +9,8 @@ import ManageTeachers from '@/components/admin/ManageTeachers.vue'
 import ManageAgendas from '@/components/admin/ManageAgendas.vue'
 import ManageAchievements from '@/components/admin/ManageAchievements.vue'
 import ManageGalleries from '@/components/admin/ManageGalleries.vue'
+import ManageExtracurriculars from '@/components/admin/ManageExtracurricular.vue'
+import ManageOsis from '@/components/admin/ManageOsis.vue'
 
 const router = useRouter()
 const admin = ref(getAdminUser() || { name: 'Administrator' })
@@ -57,41 +59,55 @@ const handleLogout = () => {
           :class="{ active: activeTab === 'berita' }"
           @click="selectTab('berita')"
         >
-          📰 Kelola Berita
+          Kelola Berita
         </button>
         <button
           class="nav-item"
           :class="{ active: activeTab === 'guru' }"
           @click="selectTab('guru')"
         >
-          👨‍🏫 Kelola Guru & GTK
+          Kelola Guru
         </button>
         <button
           class="nav-item"
           :class="{ active: activeTab === 'agenda' }"
           @click="selectTab('agenda')"
         >
-          📅 Kelola Agenda
+          Kelola Agenda
         </button>
         <button
           class="nav-item"
           :class="{ active: activeTab === 'prestasi' }"
           @click="selectTab('prestasi')"
         >
-          🏆 Kelola Prestasi
+          Kelola Prestasi
         </button>
         <button
           class="nav-item"
           :class="{ active: activeTab === 'galeri' }"
           @click="selectTab('galeri')"
         >
-          📸 Kelola Galeri
+          Kelola Galeri
+        </button>
+        <button
+          class="nav-item"
+          :class="{ active: activeTab === 'eskul' }"
+          @click="selectTab('eskul')"
+        >
+          Kelola Ekstrakurikuler
+        </button>
+        <button
+          class="nav-item"
+          :class="{ active: activeTab === 'osis' }"
+          @click="selectTab('osis')"
+        >
+          Kelola OSIS
         </button>
       </nav>
 
       <div class="sidebar-footer">
         <button @click="handleLogout" class="logout-btn">
-          🚪 Keluar
+          Keluar
         </button>
       </div>
     </aside>
@@ -115,7 +131,11 @@ const handleLogout = () => {
                 ? 'Kalender Agenda Sekolah'
                 : activeTab === 'prestasi'
                 ? 'Daftar Prestasi Peserta Didik'
-                : 'Dokumentasi Galeri Kegiatan'
+                : activeTab === 'galeri'
+                ? 'Dokumentasi Galeri Kegiatan'
+                : activeTab === 'eskul'
+                ? 'Manajemen Ekstrakurikuler'
+                : 'Manajemen OSIS'
             }}
           </h1>
         </div>
@@ -133,6 +153,8 @@ const handleLogout = () => {
         <ManageAgendas v-else-if="activeTab === 'agenda'" />
         <ManageAchievements v-else-if="activeTab === 'prestasi'" />
         <ManageGalleries v-else-if="activeTab === 'galeri'" />
+        <ManageExtracurriculars v-else-if="activeTab === 'eskul'" />
+        <ManageOsis v-else-if="activeTab === 'osis'" />
       </section>
     </main>
   </div>

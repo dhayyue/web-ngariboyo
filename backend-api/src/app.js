@@ -11,6 +11,8 @@ import achievementRoutes from './routes/achievementRoutes.js'
 import agendaRoutes from './routes/agendaRoutes.js'
 import galleryRoutes from './routes/galleryRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import extracurricularRoutes from './routes/extracurricularRoutes.js'
+import osisRoutes from './routes/osisRoutes.js'
 
 dotenv.config()
 
@@ -50,6 +52,8 @@ app.use('/api/teachers', teacherRoutes)
 app.use('/api/achievements', achievementRoutes)
 app.use('/api/agendas', agendaRoutes)
 app.use('/api/galleries', galleryRoutes)
+app.use('/api/extracurriculars', extracurricularRoutes)
+app.use('/api/osis', osisRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server aktif di http://localhost:${PORT}`)

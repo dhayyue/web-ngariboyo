@@ -16,7 +16,6 @@ const teacherForm = ref({
   name: '',
   role: 'Guru Mata Pelajaran',
   category: 'Guru Mata Pelajaran',
-  nip: '',
   subject: ''
 })
 
@@ -45,7 +44,6 @@ const openTeacherModal = () => {
     name: '',
     role: 'Guru Mata Pelajaran',
     category: 'Guru Mata Pelajaran',
-    nip: '',
     subject: ''
   }
   teacherPhotoFile.value = null
@@ -59,7 +57,6 @@ const openEditTeacherModal = (t) => {
     name: t.name,
     role: t.role,
     category: t.category,
-    nip: t.nip,
     subject: t.subject
   }
   teacherPhotoFile.value = null
@@ -68,8 +65,8 @@ const openEditTeacherModal = (t) => {
 }
 
 const handleSubmitTeacher = async () => {
-  if (!teacherForm.value.name || !teacherForm.value.nip) {
-    alert('Nama dan NIP guru wajib diisi!')
+  if (!teacherForm.value.name) {
+    alert('Nama guru wajib diisi!')
     return
   }
 
@@ -80,7 +77,6 @@ const handleSubmitTeacher = async () => {
     formData.append('name', teacherForm.value.name)
     formData.append('role', teacherForm.value.role)
     formData.append('category', teacherForm.value.category)
-    formData.append('nip', teacherForm.value.nip)
     formData.append('subject', teacherForm.value.subject || '-')
     if (teacherPhotoFile.value) {
       formData.append('photo', teacherPhotoFile.value)
@@ -144,7 +140,7 @@ onMounted(() => {
 
     <div class="card-panel">
       <div class="panel-header">
-        <h3>Daftar Guru & GTK ({{ teacherList.length }})</h3>
+        <h3>Daftar Guru & Tenaga Kependidikan ({{ teacherList.length }})</h3>
         <button @click="openTeacherModal" class="btn-primary">+ Tambah Guru</button>
       </div>
 
@@ -155,7 +151,6 @@ onMounted(() => {
             <tr>
               <th>Foto</th>
               <th>Nama Lengkap</th>
-              <th>NIP</th>
               <th>Jabatan</th>
               <th>Mata Pelajaran</th>
               <th>Aksi</th>
@@ -167,7 +162,6 @@ onMounted(() => {
                 <img :src="formatImageUrl(t.photo)" :alt="t.name" class="table-avatar" />
               </td>
               <td class="font-medium">{{ t.name }}</td>
-              <td>{{ t.nip }}</td>
               <td><span class="tag blue">{{ t.role }}</span></td>
               <td>{{ t.subject }}</td>
               <td>
@@ -186,7 +180,7 @@ onMounted(() => {
     <div v-if="showTeacherModal" class="modal-overlay">
       <div class="modal-card">
         <div class="modal-header">
-          <h3>{{ editingTeacherId ? 'Edit Data Guru' : 'Tambah Guru & GTK' }}</h3>
+          <h3>{{ editingTeacherId ? 'Edit Data Guru' : 'Tambah Guru & Tenaga Kependidikan' }}</h3>
           <button @click="showTeacherModal = false" class="close-btn">&times;</button>
         </div>
         <form @submit.prevent="handleSubmitTeacher" class="modal-body">
@@ -196,8 +190,7 @@ onMounted(() => {
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>NIP</label>
-              <input v-model="teacherForm.nip" type="text" placeholder="Nomor Induk Pegawai" required />
+              <input type="text" placeholder="Nomor Induk Pegawai" required />
             </div>
             <div class="form-group">
               <label>Kategori</label>

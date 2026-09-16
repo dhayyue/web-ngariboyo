@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { getExtracurriculars, getOsisPrograms } from '@/services/api.js'
 
 const route = useRoute()
 const activeTab = ref('osis')
@@ -14,71 +15,62 @@ const syncTabWithHash = () => {
   }
 }
 
-onMounted(() => {
-  syncTabWithHash()
-})
-
 watch(() => route.hash, () => {
   syncTabWithHash()
 })
 
-const osisPrograms = [
-  {
-    title: 'Latihan Dasar Kepemimpinan Siswa (LDKS)',
-    desc: 'Pelatihan tahunan bagi pengurus OSIS dan perwakilan kelas guna membangun jiwa kepemimpinan, kedisiplinan, dan tanggung jawab organisasi.'
-  },
-  {
-    title: 'Porseni & Class Meeting',
-    desc: 'Ajang kompetisi olahraga dan kreativitas antarkelas yang diselenggarakan setiap pasca asesmen akhir semester.'
-  },
-  {
-    title: 'Peringatan Hari Besar Nasional & Keagamaan',
-    desc: 'Penyelenggaraan berbagai kegiatan apresiasi seni budaya, bakti sosial, dan ibadah bersama memperingati momentum penting.'
-  },
-  {
-    title: 'Gerakan Sekolah Bersih & Ramah Lingkungan',
-    desc: 'Inisiatif rutin piket pelestarian taman sekolah serta kampanye pengurangan sampah plastik.'
-  }
-]
+// -------------------------------------------------------------
+// 1. Data Ekstrakurikuler
+// -------------------------------------------------------------
+const extracurriculars = ref([])
+const isEskulLoading = ref(false)
 
-const extracurriculars = [
-  {
-    name: 'Pramuka (Wajib)',
-    category: 'Kepanduan',
-    badgeColor: 'blue',
-    desc: 'Membentuk kedisiplinan, kemandirian, kecakapan bertahan hidup, dan patriotisme generasi muda.'
-  },
-  {
-    name: 'Palang Merah Remaja (PMR)',
-    category: 'Kemanusiaan',
-    badgeColor: 'red',
-    desc: 'Pelatihan pertolongan pertama pada kecelakaan (P3K), kesiapsiagaan bencana, dan kepedulian sosial.'
-  },
-  {
-    name: 'Futsal & Sepak Bola',
-    category: 'Olahraga',
-    badgeColor: 'green',
-    desc: 'Pembinaan fisik, taktik beregu, dan persiapan menghadapi turnamen pelajar daerah.'
-  },
-  {
-    name: 'Bola Voli',
-    category: 'Olahraga',
-    badgeColor: 'green',
-    desc: 'Pengasahan teknik passing, servis, dan kekompakan tim dalam kejuaraan sekolah.'
-  },
-  {
-    name: 'Seni Tari Tradisional',
-    category: 'Seni & Budaya',
-    badgeColor: 'purple',
-    desc: 'Melestarikan seni tari daerah Jawa Timur serta tampil pada acara resmi dan festival kebudayaan.'
-  },
-  {
-    name: 'Klub Komputer & Robotika',
-    category: 'Sains & IT',
-    badgeColor: 'blue',
-    desc: 'Eksplorasi dasar coding, desain grafis, dan pemanfaatan teknologi digital kreatif.'
+const fetchEskulData = async () => {
+  try {
+    isEskulLoading.value = true
+    const res = await getExtracurriculars()
+    extracurriculars.value = Array.isArray(res) ? res : (res?.data || [])
+  } catch (err) {
+    console.error('Gagal memuat data ekstrakurikuler:', err)
+  } finally {
+    isEskulLoading.value = false
   }
-]
+}
+
+const getBadgeClass = (category) => {
+  switch (category) {
+    case 'Kepanduan': return 'pill-blue'
+    case 'Kemanusiaan': return 'pill-red'
+    case 'Olahraga': return 'pill-green'
+    case 'Seni & Budaya': return 'pill-purple'
+    case 'Sains & IT': return 'pill-cyan'
+    default: return 'pill-blue'
+  }
+}
+
+// -------------------------------------------------------------
+// 2. Data Program OSIS
+// -------------------------------------------------------------
+const osisPrograms = ref([])
+const isOsisLoading = ref(false)
+
+const fetchOsisData = async () => {
+  try {
+    isOsisLoading.value = true
+    const res = await getOsisPrograms()
+    osisPrograms.value = Array.isArray(res) ? res : (res?.data || [])
+  } catch (err) {
+    console.error('Gagal memuat data program OSIS:', err)
+  } finally {
+    isOsisLoading.value = false
+  }
+}
+
+onMounted(() => {
+  syncTabWithHash()
+  fetchEskulData()
+  fetchOsisData()
+})
 </script>
 
 <template>
@@ -122,8 +114,20 @@ const extracurriculars = [
         </div>
 
         <h3 class="sub-title">Program Kerja Unggulan</h3>
-        <div class="program-grid">
-          <div v-for="(item, idx) in osisPrograms" :key="idx" class="program-card">
+
+        <!-- Loading State -->
+        <div v-if="isOsisLoading" class="empty-state">
+          Memuat program kerja OSIS...
+        </div>
+
+        <!-- Data Kosong -->
+        <div v-else-if="osisPrograms.length === 0" class="empty-state">
+          Belum ada data program kerja OSIS yang diterbitkan.
+        </div>
+
+        <!-- Grid Data Dinamis dari Backend -->
+        <div v-else class="program-grid">
+          <div v-for="(item, idx) in osisPrograms" :key="item.id || idx" class="program-card">
             <div class="card-header">
               <span class="program-num">0{{ idx + 1 }}</span>
               <h4>{{ item.title }}</h4>
@@ -140,13 +144,35 @@ const extracurriculars = [
           Setiap siswa diwajibkan mengikuti Gerakan Pramuka dan didorong memilih minimal satu ekstrakurikuler minat bakat:
         </p>
 
-        <div class="ekskul-grid">
-          <div v-for="(ekskul, idx) in extracurriculars" :key="idx" class="ekskul-card">
+        <!-- Loading State -->
+        <div v-if="isEskulLoading" class="empty-state">
+          Memuat data ekstrakurikuler...
+        </div>
+
+        <!-- Data Kosong -->
+        <div v-else-if="extracurriculars.length === 0" class="empty-state">
+          Belum ada data kegiatan ekstrakurikuler yang diterbitkan.
+        </div>
+
+        <!-- Grid Data Dinamis -->
+        <div v-else class="ekskul-grid">
+          <div v-for="ekskul in extracurriculars" :key="ekskul.id" class="ekskul-card">
             <div class="ekskul-top">
-              <span class="category-pill" :class="`pill-${ekskul.badgeColor}`">{{ ekskul.category }}</span>
+              <span class="category-pill" :class="getBadgeClass(ekskul.category)">
+                {{ ekskul.category }}
+              </span>
             </div>
             <h3 class="ekskul-name">{{ ekskul.name }}</h3>
-            <p class="ekskul-desc">{{ ekskul.desc }}</p>
+            <p class="ekskul-desc">{{ ekskul.description || 'Tidak ada deskripsi kegiatan.' }}</p>
+            
+            <div v-if="ekskul.schedule || ekskul.coach" class="ekskul-meta">
+              <span v-if="ekskul.schedule" class="meta-item">
+                🕒 {{ ekskul.schedule }}
+              </span>
+              <span v-if="ekskul.coach && ekskul.coach !== '-'" class="meta-item">
+                👤 {{ ekskul.coach }}
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -325,12 +351,14 @@ const extracurriculars = [
   border-radius: 9999px;
   letter-spacing: 0.5px;
   margin-bottom: 12px;
+  width: fit-content;
 }
 
 .pill-blue { background: #eff6ff; color: #1d4ed8; }
 .pill-red { background: #fef2f2; color: #dc2626; }
 .pill-green { background: #f0fdf4; color: #16a34a; }
 .pill-purple { background: #faf5ff; color: #9333ea; }
+.pill-cyan { background: #ecfeff; color: #0891b2; }
 
 .ekskul-name {
   margin: 0 0 8px 0;
@@ -340,10 +368,32 @@ const extracurriculars = [
 }
 
 .ekskul-desc {
-  margin: 0;
+  margin: 0 0 14px 0;
   font-size: 12px;
   color: #64748b;
   line-height: 1.5;
+  flex-grow: 1;
+}
+
+.ekskul-meta {
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-item {
+  font-size: 11px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 16px;
+  color: #94a3b8;
+  font-size: 14px;
 }
 
 @media (max-width: 900px) {
@@ -355,9 +405,6 @@ const extracurriculars = [
 @media (max-width: 640px) {
   .program-grid, .ekskul-grid {
     grid-template-columns: 1fr;
-  }
-  .section-card {
-    padding: 20px;
   }
 }
 </style>

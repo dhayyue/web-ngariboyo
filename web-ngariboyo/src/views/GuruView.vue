@@ -103,10 +103,6 @@ const filteredTeachers = computed(() => {
             <span class="badge-role">{{ teacher.role }}</span>
             <h3 class="teacher-name">{{ teacher.name }}</h3>
             <p class="teacher-subject">{{ teacher.subject }}</p>
-            <div class="nip-box">
-              <span class="nip-label">NIP:</span>
-              <span class="nip-val">{{ teacher.nip }}</span>
-            </div>
           </div>
         </div>
       </div>
@@ -278,20 +274,6 @@ const filteredTeachers = computed(() => {
   font-size: 13px;
   color: #64748b;
   line-height: 1.4;
-}
-
-.nip-box {
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px dashed #e2e8f0;
-  font-size: 11px;
-  color: #94a3b8;
-  display: flex;
-  gap: 4px;
-}
-
-.nip-label {
-  font-weight: 700;
 }
 
 .empty-state {

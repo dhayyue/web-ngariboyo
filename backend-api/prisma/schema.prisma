@@ -65,8 +65,8 @@ model Gallery {
   id        Int      @id @default(autoincrement())
   title     String
   category  String
-  date      DateTime
-  image     String
+  date      String?
+  image     String?
   desc      String?   @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -75,13 +75,14 @@ model Gallery {
 // 6. Agenda Kegiatan
 model Agenda {
   id        Int      @id @default(autoincrement())
-  startDate DateTime
-  endDate   DateTime
+  dateDay   String
+  dateMonth String
   title     String
-  period    String
-  desc      String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  period    String?
+  desc      String?  @db.Text
+  startDate DateTime? // <-- Tambahkan tanda tanya (?)
+  endDate   DateTime? // <-- Tambahkan tanda tanya (?)
+  createdAt DateTime  @default(now())
 }
 
 // 7. Ekstrakulikuler
@@ -95,6 +96,14 @@ model Extracurricular {
   image       String?  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
   @@map("extracurriculars")
+}
+
+
+// 8. Osis&Kepemimpinan
+model OsisProgram {
+  id        Int      @id @default(autoincrement())
+  title     String
+  desc      String   @db.Text
+  createdAt DateTime @default(now())
 }
