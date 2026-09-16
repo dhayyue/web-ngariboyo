@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
-import { getTeachers, formatImageUrl } from '@/services/api.js'
+import { API_BASE_URL, getTeachers, formatImageUrl } from '@/services/api.js'
 
 const teacherList = ref([])
 const isTeacherLoading = ref(false)
@@ -84,8 +84,8 @@ const handleSubmitTeacher = async () => {
 
     const isEdit = !!editingTeacherId.value
     const url = isEdit
-      ? `http://localhost:5000/api/teachers/${editingTeacherId.value}`
-      : 'http://localhost:5000/api/teachers'
+      ? `${API_BASE_URL}/teachers/${editingTeacherId.value}`
+      : `${API_BASE_URL}/teachers`
     const method = isEdit ? 'PUT' : 'POST'
 
     const res = await fetch(url, {
@@ -112,7 +112,7 @@ const handleDeleteTeacher = async (id) => {
   if (!confirm('Yakin ingin menghapus data guru ini?')) return
   try {
     const token = getToken()
-    const res = await fetch(`http://localhost:5000/api/teachers/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/teachers/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })

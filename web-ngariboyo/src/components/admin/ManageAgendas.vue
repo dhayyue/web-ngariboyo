@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
-import { getAgendas } from '@/services/api.js'
+import { API_BASE_URL, getAgendas } from '@/services/api.js'
 
 const agendaList = ref([])
 const isAgendaLoading = ref(false)
@@ -65,8 +65,8 @@ const handleSubmitAgenda = async () => {
     const token = getToken()
     const isEdit = !!editingAgendaId.value
     const url = isEdit
-      ? `http://localhost:5000/api/agendas/${editingAgendaId.value}`
-      : 'http://localhost:5000/api/agendas'
+      ? `${API_BASE_URL}/agendas/${editingAgendaId.value}`
+      : `${API_BASE_URL}/agendas`
     const method = isEdit ? 'PUT' : 'POST'
 
     const res = await fetch(url, {
@@ -96,7 +96,7 @@ const handleDeleteAgenda = async (id) => {
   if (!confirm('Yakin ingin menghapus agenda ini?')) return
   try {
     const token = getToken()
-    const res = await fetch(`http://localhost:5000/api/agendas/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/agendas/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
-import { getGalleries, formatImageUrl } from '@/services/api.js'
+import { API_BASE_URL, getGalleries, formatImageUrl } from '@/services/api.js'
 
 const galleryList = ref([])
 const isGalleryLoading = ref(false)
@@ -81,8 +81,8 @@ const handleSubmitGallery = async () => {
 
     const isEdit = !!editingGalleryId.value
     const url = isEdit
-      ? `http://localhost:5000/api/galleries/${editingGalleryId.value}`
-      : 'http://localhost:5000/api/galleries'
+      ? `${API_BASE_URL}/galleries/${editingGalleryId.value}`
+      : `${API_BASE_URL}/galleries`
     const method = isEdit ? 'PUT' : 'POST'
 
     const res = await fetch(url, {
@@ -109,7 +109,7 @@ const handleDeleteGallery = async (id) => {
   if (!confirm('Yakin ingin menghapus foto kegiatan ini?')) return
   try {
     const token = getToken()
-    const res = await fetch(`http://localhost:5000/api/galleries/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/galleries/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })

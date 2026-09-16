@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getAdminUser, getToken } from '@/services/auth.js'
-import { getNews, formatImageUrl } from '@/services/api.js'
+import { API_BASE_URL, getNews, formatImageUrl } from '@/services/api.js'
 
 const admin = ref(getAdminUser() || { name: 'Administrator' })
 const newsList = ref([])
@@ -89,8 +89,8 @@ const handleSubmitNews = async () => {
 
     const isEdit = !!editingNewsId.value
     const url = isEdit
-      ? `http://localhost:5000/api/news/${editingNewsId.value}`
-      : 'http://localhost:5000/api/news'
+      ? `${API_BASE_URL}/news/${editingNewsId.value}`
+      : `${API_BASE_URL}/news`
     const method = isEdit ? 'PUT' : 'POST'
 
     const res = await fetch(url, {
@@ -117,7 +117,7 @@ const handleDeleteNews = async (id) => {
   if (!confirm('Yakin ingin menghapus berita ini?')) return
   try {
     const token = getToken()
-    const res = await fetch(`http://localhost:5000/api/news/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/news/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })

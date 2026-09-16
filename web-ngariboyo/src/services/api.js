@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://localhost:5000/api'
-const BACKEND_URL = 'http://localhost:5000'
+export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api').replace(/\/$/, '')
+export const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '')
 
 // Helper ekstraksi data respon (antisipasi json.data maupun json langsung)
 const extractData = (json) => (json && json.data !== undefined ? json.data : json)

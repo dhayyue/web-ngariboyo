@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
-import { getAchievements } from '@/services/api.js'
+import { API_BASE_URL, getAchievements } from '@/services/api.js'
 
 const achievementList = ref([])
 const isAchievementLoading = ref(false)
@@ -76,8 +76,8 @@ const handleSubmitAchievement = async () => {
     const token = getToken()
     const isEdit = !!editingAchievementId.value
     const url = isEdit
-      ? `http://localhost:5000/api/achievements/${editingAchievementId.value}`
-      : 'http://localhost:5000/api/achievements'
+      ? `${API_BASE_URL}/achievements/${editingAchievementId.value}`
+      : `${API_BASE_URL}/achievements`
     const method = isEdit ? 'PUT' : 'POST'
 
     const res = await fetch(url, {
@@ -107,7 +107,7 @@ const handleDeleteAchievement = async (id) => {
   if (!confirm('Yakin ingin menghapus prestasi ini?')) return
   try {
     const token = getToken()
-    const res = await fetch(`http://localhost:5000/api/achievements/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/achievements/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })
