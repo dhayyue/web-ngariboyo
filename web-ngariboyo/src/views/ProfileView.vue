@@ -1,12 +1,13 @@
 <script setup>
-const vision = 'Terwujudnya peserta didik yang beriman, berkarakter, unggul dalam prestasi, menguasai ilmu pengetahuan dan teknologi, serta berwawasan lingkungan.'
+const vision = 'Religius, Cerdas, Berkualitas, yang Berwawasan Lingkungan'
 
 const missions = [
-  'Menumbuhkan penghayatan dan pengamalan ajaran agama yang dianut serta budi pekerti luhur.',
-  'Melaksanakan pembelajaran dan bimbingan secara efektif, kreatif, dan inovatif untuk mengoptimalkan potensi siswa.',
-  'Mendorong semangat berprestasi di bidang akademik maupun non-akademik secara berkelanjutan.',
-  'Mengembangkan keterampilan pemanfaatan teknologi informasi dan komunikasi dalam proses pembelajaran.',
-  'Menciptakan lingkungan sekolah yang bersih, hijau, asri, sehat, aman, dan ramah anak.'
+  'Peningkatan Karakter & Imtaq: Menumbuhkan ketaqwaan, akhlak mulia, kejujuran, dan budi pekerti luhur.',
+  'Pendidikan Berkualitas: Melaksanakan proses pembelajaran inovatif, bermutu, dan berdaya saing tinggi.',
+  'Kemandirian & Kecakapan Hidup: Membekali siswa dengan kompetensi nyata agar mandiri menyongsong masa depan.',
+  'Berwawasan Lingkungan & Adiwiyata: Mendorong kepekaan warga sekolah terhadap pencegahan kerusakan dan pelestarian lingkungan hidup.',
+  'Kemitraan & Kolaborasi: Membangun kerja sama sinergis dengan orang tua/wali murid, lembaga pemerintahan, dan masyarakat.',
+  'Profil Lulusan Holistik: Mewujudkan 8 Dimensi Profil Lulusan (Iman-Taqwa, Kewargaan, Penalaran Kritis, Kreativitas, Kolaborasi, Kemandirian, Kesehatan, dan Komunikasi).'
 ]
 
 const facilities = [
@@ -52,10 +53,10 @@ const facilities = [
         <h2 class="section-heading">Sejarah Singkat Sekolah</h2>
         <div class="text-content">
           <p>
-            SMP Negeri 1 Ngariboyo didirikan sebagai komitmen mencerdaskan kehidupan generasi muda di wilayah Kecamatan Ngariboyo dan sekitarnya. Sejak awal berdirinya, sekolah ini terus bertumbuh menjadi salah satu lembaga pendidikan rujukan dengan tradisi disiplin, integritas, dan capaian prestasi yang terus meningkat.
+            <strong>SMP Negeri 1 Ngariboyo</strong> adalah satuan pendidikan tingkat menengah pertama di Kabupaten Magetan yang berkomitmen menyelenggarakan pendidikan berkualitas, inklusif (<em>Education for All</em>), serta berbudaya lingkungan. Berjarak sekitar 2,5 km dari pusat pemerintahan Kabupaten Magetan, sekolah berdiri di lingkungan yang asri, tenang, dan kondusif dengan luas lahan 16.000 m² (luas bangunan 10.973 m²).
           </p>
           <p>
-            Melalui dukungan para pendidik berdedikasi, komite sekolah, dan sarana yang terus dimodernisasi, SMP Negeri 1 Ngariboyo senantiasa beradaptasi dengan kemajuan kurikulum nasional untuk mencetak lulusan yang tidak hanya unggul secara akademis, tetapi juga memiliki akhlak mulia dan kepedulian sosial yang tinggi.
+            Kami menerapkan pendekatan <em>Pembelajaran Mendalam</em> yang berkesadaran, bermakna, dan menggembirakan guna mencetak generasi yang berdaya saing global, berkarakter luhur, mandiri, serta peka terhadap pelestarian alam dan potensi kearifan lokal wirausaha daerah.
           </p>
         </div>
       </section>

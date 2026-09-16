@@ -6,20 +6,20 @@ const principalData = {
   photo: '/profile.png',
   greeting: 'Assalamu\'alaikum Warahmatullahi Wabarakatuh,',
   message1: 'Selamat datang di website resmi SMP Negeri 1 Ngariboyo. Kami berkomitmen untuk memberikan pendidikan terbaik dan membentuk generasi yang berakhlak mulia, cerdas, serta siap menghadapi tantangan masa depan.',
-  message2: 'Semoga website ini dapat menjadi media informasi dan komunikasi yang bermanfaat bagi seluruh warga sekolah dan masyarakat.'
+  message2: 'Terima kasih atas kepercayaan dan sinergi dari seluruh guru, staf, komite, dan para wali murid. Mari bersama-sama membimbing generasi penerus bangsa menuju masa depan yang gemilang.'
 }
 
 // Data Profil Singkat (Grid 3x3)
 const schoolStats = [
-  { label: 'NPSN', value: '20509678', icon: 'shield' },
+  { label: 'NPSN', value: '20509373', icon: 'shield' },
   { label: 'Akreditasi', value: 'A (Unggul)', icon: 'award' },
   { label: 'Tahun Berdiri', value: '1985', icon: 'calendar' },
   { label: 'Status', value: 'Negeri', icon: 'building' },
   { label: 'Jumlah Siswa', value: '756 Siswa', icon: 'users' },
-  { label: 'Jumlah Guru', value: '48 Guru', icon: 'teacher' },
+  { label: 'Jumlah Guru', value: '52 Guru', icon: 'teacher' },
   { label: 'Kurikulum', value: 'Kurikulum Merdeka', icon: 'book' },
-  { label: 'Visi Sekolah', value: 'Generasi unggul, berkarakter, berwawasan lingkungan.', icon: 'target' },
-  { label: 'Misi Sekolah', value: 'Menyelenggarakan pendidikan berkualitas untuk membentuk generasi unggul.', icon: 'checklist' }
+  { label: 'Visi Sekolah', value: 'Religius, Cerdas, Berkualitas, yang Berwawasan Lingkungan.', icon: 'target' },
+  { label: 'Misi Sekolah', value: 'Peningkatan Karakter & Imtaq, Pendidikan Berkualitas, Kemandirian & Kecakapan Hidup, Berwawasan Lingkungan & Adiwiyata, Kemitraan & Kolaborasi, serta Profil Lulusan Holistik.', icon: 'checklist' }
 ]
 </script>
 

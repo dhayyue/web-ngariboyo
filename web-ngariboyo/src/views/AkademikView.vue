@@ -46,16 +46,16 @@ watch(() => route.hash, () => {
 
 const curriculumHighlights = [
   {
-    title: 'Intrakurikuler Terstruktur',
-    desc: 'Pembelajaran berbasis kompetensi mendalam dengan pendekatan diferensiasi sesuai minat dan kesiapan belajar siswa.'
+    title: 'Intrakurikuler',
+    desc: 'Pembelajaran reguler mata pelajaran wajib dan muatan lokal (Bahasa Jawa).'
   },
   {
-    title: 'Projek Penguatan Profil Pelajar Pancasila (P5)',
-    desc: 'Kegiatan kokurikuler lintas disiplin ilmu untuk menumbuhkan karakter beriman, berkebinekaan global, gotong royong, mandiri, bernalar kritis, dan kreatif.'
+    title: 'Kokurikuler',
+    desc: 'Penguatan kompetensi dan karakter lintas disiplin ilmu yang terintegrasi dengan 8 Dimensi Profil Lulusan serta program 7 Kebiasaan Anak Indonesia Hebat.'
   },
   {
-    title: 'Ekstrakurikuler Pilihan',
-    desc: 'Wadah pengembangan bakat sains, seni budaya, olahraga, kepanduan, dan teknologi informasi.'
+    title: 'Ekstrakurikuler',
+    desc: 'Pembinaan bakat, minat, dan kepemimpinan (Pramuka sebagai ekstra wajib, serta ekstrakurikuler pilihan olahraga, seni, dan sains).'
   }
 ]
 </script>

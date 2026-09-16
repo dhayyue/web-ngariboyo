@@ -1,10 +1,34 @@
 <script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+
 const contactInfo = {
   address: 'Jl. Karas, Ngariboyo, Kec. Ngariboyo, Kabupaten Magetan, Jawa Timur',
   phone: '(0351) 894537',
-  email: 'smpn1ngariboyo@gmail.com',
-  hours: 'Senin, 07:00'
+  email: 'smpn1ngariboyo@gmail.com'
 }
+
+const currentTime = ref('')
+let clockTimer
+
+const updateCurrentTime = () => {
+  currentTime.value = new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    weekday: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).format(new Date()) + ' WIB'
+}
+
+onMounted(() => {
+  updateCurrentTime()
+  clockTimer = window.setInterval(updateCurrentTime, 1000)
+})
+
+onBeforeUnmount(() => {
+  window.clearInterval(clockTimer)
+})
 </script>
 
 <template>
@@ -45,7 +69,7 @@ const contactInfo = {
           <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          {{ contactInfo.hours }}
+          {{ currentTime }}
         </span>
       </div>
     </div>

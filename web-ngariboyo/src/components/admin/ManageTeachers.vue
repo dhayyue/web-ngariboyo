@@ -190,9 +190,6 @@ onMounted(() => {
           </div>
           <div class="form-row">
             <div class="form-group">
-              <input type="text" placeholder="Nomor Induk Pegawai" required />
-            </div>
-            <div class="form-group">
               <label>Kategori</label>
               <select v-model="teacherForm.category">
                 <option value="Pimpinan">Pimpinan</option>

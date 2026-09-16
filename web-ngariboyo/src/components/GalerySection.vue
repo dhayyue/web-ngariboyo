@@ -1,38 +1,13 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import { formatImageUrl } from '@/services/api.js'
 
-const galleries = [
-  {
-    id: 1,
-    title: 'Kegiatan Belajar Mengajar',
-    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=400&auto=format&fit=crop'
-  },
-  {
-    id: 2,
-    title: 'Praktikum Laboratorium',
-    image: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=400&auto=format&fit=crop'
-  },
-  {
-    id: 3,
-    title: 'Ekstrakurikuler Pramuka',
-    image: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=400&auto=format&fit=crop'
-  },
-  {
-    id: 4,
-    title: 'Kegiatan Olahraga',
-    image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=400&auto=format&fit=crop'
-  },
-  {
-    id: 5,
-    title: 'Kunjungan Industri & Edukasi',
-    image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=400&auto=format&fit=crop'
-  },
-  {
-    id: 6,
-    title: 'Upacara Bendera',
-    image: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=400&auto=format&fit=crop'
+defineProps({
+  galleries: {
+    type: Array,
+    default: () => []
   }
-]
+})
 </script>
 
 <template>
@@ -53,7 +28,7 @@ const galleries = [
       <div class="gallery-grid">
         <div v-for="item in galleries" :key="item.id" class="gallery-card">
           <div class="img-wrapper">
-            <img :src="item.image" :alt="item.title" class="gallery-img" />
+            <img :src="formatImageUrl(item.image)" :alt="item.title" class="gallery-img" />
           </div>
           <p class="gallery-caption">{{ item.title }}</p>
         </div>
