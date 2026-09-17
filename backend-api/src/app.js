@@ -21,10 +21,22 @@ const __dirname = path.dirname(__filename)
 
 const app = express()
 const PORT = process.env.PORT || 5000
+const allowedOrigins = new Set(
+  (process.env.CORS_ORIGINS || 'http://localhost:5173')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+)
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) {
+      return callback(null, true)
+    }
+
+    return callback(new Error('Origin tidak diizinkan oleh CORS'))
+  },
   credentials: true
 }))
 app.use(express.json())
