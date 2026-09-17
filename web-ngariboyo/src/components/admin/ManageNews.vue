@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getAdminUser, getToken } from '@/services/auth.js'
 import { API_BASE_URL, getNews, formatImageUrl } from '@/services/api.js'
+import { showAlert, showConfirm } from '@/utils/swal.js'
 
 const admin = ref(getAdminUser() || { name: 'Administrator' })
 const newsList = ref([])
@@ -70,7 +71,11 @@ const openEditNewsModal = (item) => {
 
 const handleSubmitNews = async () => {
   if (!newsForm.value.title || !newsForm.value.content) {
-    alert('Judul dan konten berita wajib diisi!')
+    await showAlert({
+      icon: 'warning',
+      title: 'Perhatian',
+      text: 'Judul dan konten berita wajib diisi!'
+    })
     return
   }
 
@@ -103,18 +108,28 @@ const handleSubmitNews = async () => {
     if (!res.ok) throw new Error(json.message || 'Gagal menyimpan berita')
 
     actionMessage.value = isEdit ? 'Berita berhasil diperbarui!' : 'Berita berhasil diterbitkan!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     showNewsModal.value = false
     fetchNewsData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   } finally {
     isSubmittingNews.value = false
   }
 }
 
 const handleDeleteNews = async (id) => {
-  if (!confirm('Yakin ingin menghapus berita ini?')) return
+  const confirmed = await showConfirm('Hapus berita?', 'Yakin ingin menghapus berita ini?')
+  if (!confirmed) return
   try {
     const token = getToken()
     const res = await fetch(`${API_BASE_URL}/news/${id}`, {
@@ -125,10 +140,19 @@ const handleDeleteNews = async (id) => {
     if (!res.ok) throw new Error(json.message || 'Gagal menghapus berita')
 
     actionMessage.value = 'Berita berhasil dihapus!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     fetchNewsData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   }
 }
 

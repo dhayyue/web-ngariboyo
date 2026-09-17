@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
 import { API_BASE_URL, getAgendas } from '@/services/api.js'
+import { showAlert, showConfirm } from '@/utils/swal.js'
 
 const agendaList = ref([])
 const isAgendaLoading = ref(false)
@@ -56,7 +57,11 @@ const openEditAgendaModal = (ag) => {
 
 const handleSubmitAgenda = async () => {
   if (!agendaForm.value.dateDay || !agendaForm.value.title) {
-    alert('Tanggal dan judul agenda wajib diisi!')
+    await showAlert({
+      icon: 'warning',
+      title: 'Perhatian',
+      text: 'Tanggal dan judul agenda wajib diisi!'
+    })
     return
   }
 
@@ -82,18 +87,28 @@ const handleSubmitAgenda = async () => {
     if (!res.ok) throw new Error(json.message || 'Gagal menyimpan agenda')
 
     actionMessage.value = isEdit ? 'Agenda berhasil diperbarui!' : 'Agenda berhasil ditambahkan!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     showAgendaModal.value = false
     fetchAgendaData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   } finally {
     isSubmittingAgenda.value = false
   }
 }
 
 const handleDeleteAgenda = async (id) => {
-  if (!confirm('Yakin ingin menghapus agenda ini?')) return
+  const confirmed = await showConfirm('Hapus agenda?', 'Yakin ingin menghapus agenda ini?')
+  if (!confirmed) return
   try {
     const token = getToken()
     const res = await fetch(`${API_BASE_URL}/agendas/${id}`, {
@@ -104,10 +119,19 @@ const handleDeleteAgenda = async (id) => {
     if (!res.ok) throw new Error(json.message || 'Gagal menghapus agenda')
 
     actionMessage.value = 'Agenda berhasil dihapus!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     fetchAgendaData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   }
 }
 

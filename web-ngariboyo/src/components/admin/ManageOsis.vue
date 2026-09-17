@@ -6,6 +6,7 @@ import {
   saveOsisProgram,
   deleteOsisProgram
 } from '@/services/api.js'
+import { showAlert, showConfirm } from '@/utils/swal.js'
 
 const programs = ref([])
 const isLoading = ref(false)
@@ -48,7 +49,11 @@ const openEditModal = (item) => {
 
 const handleSubmit = async () => {
   if (!form.value.title || !form.value.desc) {
-    alert('Judul dan deskripsi program wajib diisi!')
+    await showAlert({
+      icon: 'warning',
+      title: 'Perhatian',
+      text: 'Judul dan deskripsi program wajib diisi!'
+    })
     return
   }
 
@@ -59,26 +64,45 @@ const handleSubmit = async () => {
     actionMessage.value = editingId.value
       ? 'Program OSIS berhasil diperbarui!'
       : 'Program OSIS berhasil ditambahkan!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     showModal.value = false
     fetchPrograms()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   } finally {
     isSubmitting.value = false
   }
 }
 
 const handleDelete = async (id) => {
-  if (!confirm('Hapus program kerja ini?')) return
+  const confirmed = await showConfirm('Hapus program?', 'Hapus program kerja ini?')
+  if (!confirmed) return
   try {
     const token = getToken()
     await deleteOsisProgram(id, token)
     actionMessage.value = 'Program OSIS berhasil dihapus!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     fetchPrograms()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   }
 }
 

@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
 import { API_BASE_URL, getTeachers, formatImageUrl } from '@/services/api.js'
+import { showAlert, showConfirm } from '@/utils/swal.js'
 
 const teacherList = ref([])
 const isTeacherLoading = ref(false)
@@ -66,7 +67,11 @@ const openEditTeacherModal = (t) => {
 
 const handleSubmitTeacher = async () => {
   if (!teacherForm.value.name) {
-    alert('Nama guru wajib diisi!')
+    await showAlert({
+      icon: 'warning',
+      title: 'Perhatian',
+      text: 'Nama guru wajib diisi!'
+    })
     return
   }
 
@@ -98,18 +103,28 @@ const handleSubmitTeacher = async () => {
     if (!res.ok) throw new Error(json.message || 'Gagal menyimpan data guru')
 
     actionMessage.value = isEdit ? 'Data guru berhasil diperbarui!' : 'Data guru berhasil ditambahkan!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     showTeacherModal.value = false
     fetchTeacherData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   } finally {
     isSubmittingTeacher.value = false
   }
 }
 
 const handleDeleteTeacher = async (id) => {
-  if (!confirm('Yakin ingin menghapus data guru ini?')) return
+  const confirmed = await showConfirm('Hapus data guru?', 'Yakin ingin menghapus data guru ini?')
+  if (!confirmed) return
   try {
     const token = getToken()
     const res = await fetch(`${API_BASE_URL}/teachers/${id}`, {
@@ -120,10 +135,19 @@ const handleDeleteTeacher = async (id) => {
     if (!res.ok) throw new Error(json.message || 'Gagal menghapus data guru')
 
     actionMessage.value = 'Data guru berhasil dihapus!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     fetchTeacherData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   }
 }
 

@@ -6,6 +6,7 @@ import {
   saveExtracurricular,
   deleteExtracurricular
 } from '@/services/api.js'
+import { showAlert, showConfirm } from '@/utils/swal.js'
 
 const eskulList = ref([])
 const isLoading = ref(false)
@@ -60,7 +61,11 @@ const openEditModal = (item) => {
 
 const handleSubmit = async () => {
   if (!form.value.name) {
-    alert('Nama ekstrakurikuler wajib diisi!')
+    await showAlert({
+      icon: 'warning',
+      title: 'Perhatian',
+      text: 'Nama ekstrakurikuler wajib diisi!'
+    })
     return
   }
 
@@ -72,27 +77,46 @@ const handleSubmit = async () => {
     actionMessage.value = editingId.value
       ? 'Ekstrakurikuler berhasil diperbarui!'
       : 'Ekstrakurikuler berhasil ditambahkan!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
 
     showModal.value = false
     fetchEskul()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   } finally {
     isSubmitting.value = false
   }
 }
 
 const handleDelete = async (id) => {
-  if (!confirm('Hapus ekstrakurikuler ini?')) return
+  const confirmed = await showConfirm('Hapus ekstrakurikuler?', 'Hapus ekstrakurikuler ini?')
+  if (!confirmed) return
   try {
     const token = getToken()
     await deleteExtracurricular(id, token)
     actionMessage.value = 'Ekstrakurikuler berhasil dihapus!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     fetchEskul()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   }
 }
 

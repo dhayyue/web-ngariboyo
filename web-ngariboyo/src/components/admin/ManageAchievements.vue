@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
 import { API_BASE_URL, getAchievements } from '@/services/api.js'
+import { showAlert, showConfirm } from '@/utils/swal.js'
 
 const achievementList = ref([])
 const isAchievementLoading = ref(false)
@@ -67,7 +68,11 @@ const openEditAchievementModal = (ach) => {
 
 const handleSubmitAchievement = async () => {
   if (!achievementForm.value.title || !achievementForm.value.student) {
-    alert('Judul dan nama siswa peraih prestasi wajib diisi!')
+    await showAlert({
+      icon: 'warning',
+      title: 'Perhatian',
+      text: 'Judul dan nama siswa peraih prestasi wajib diisi!'
+    })
     return
   }
 
@@ -93,18 +98,28 @@ const handleSubmitAchievement = async () => {
     if (!res.ok) throw new Error(json.message || 'Gagal menyimpan prestasi')
 
     actionMessage.value = isEdit ? 'Prestasi berhasil diperbarui!' : 'Prestasi berhasil dicatat!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     showAchievementModal.value = false
     fetchAchievementData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   } finally {
     isSubmittingAchievement.value = false
   }
 }
 
 const handleDeleteAchievement = async (id) => {
-  if (!confirm('Yakin ingin menghapus prestasi ini?')) return
+  const confirmed = await showConfirm('Hapus prestasi?', 'Yakin ingin menghapus prestasi ini?')
+  if (!confirmed) return
   try {
     const token = getToken()
     const res = await fetch(`${API_BASE_URL}/achievements/${id}`, {
@@ -115,10 +130,19 @@ const handleDeleteAchievement = async (id) => {
     if (!res.ok) throw new Error(json.message || 'Gagal menghapus prestasi')
 
     actionMessage.value = 'Prestasi berhasil dihapus!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     fetchAchievementData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   }
 }
 

@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { getToken } from '@/services/auth.js'
 import { API_BASE_URL, getGalleries, formatImageUrl } from '@/services/api.js'
+import { showAlert, showConfirm } from '@/utils/swal.js'
 
 const galleryList = ref([])
 const isGalleryLoading = ref(false)
@@ -64,7 +65,11 @@ const openEditGalleryModal = (item) => {
 
 const handleSubmitGallery = async () => {
   if (!galleryForm.value.title) {
-    alert('Judul dokumentasi wajib diisi!')
+    await showAlert({
+      icon: 'warning',
+      title: 'Perhatian',
+      text: 'Judul dokumentasi wajib diisi!'
+    })
     return
   }
 
@@ -95,18 +100,28 @@ const handleSubmitGallery = async () => {
     if (!res.ok) throw new Error(json.message || 'Gagal menyimpan foto galeri')
 
     actionMessage.value = isEdit ? 'Foto galeri berhasil diperbarui!' : 'Foto berhasil diunggah ke galeri!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     showGalleryModal.value = false
     fetchGalleryData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   } finally {
     isSubmittingGallery.value = false
   }
 }
 
 const handleDeleteGallery = async (id) => {
-  if (!confirm('Yakin ingin menghapus foto kegiatan ini?')) return
+  const confirmed = await showConfirm('Hapus foto?', 'Yakin ingin menghapus foto kegiatan ini?')
+  if (!confirmed) return
   try {
     const token = getToken()
     const res = await fetch(`${API_BASE_URL}/galleries/${id}`, {
@@ -117,10 +132,19 @@ const handleDeleteGallery = async (id) => {
     if (!res.ok) throw new Error(json.message || 'Gagal menghapus foto')
 
     actionMessage.value = 'Foto berhasil dihapus dari galeri!'
+    await showAlert({
+      icon: 'success',
+      title: 'Berhasil',
+      text: actionMessage.value
+    })
     setTimeout(() => (actionMessage.value = ''), 3000)
     fetchGalleryData()
   } catch (err) {
-    alert(err.message)
+    await showAlert({
+      icon: 'error',
+      title: 'Gagal',
+      text: err.message
+    })
   }
 }
 

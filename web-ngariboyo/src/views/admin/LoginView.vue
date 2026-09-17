@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { loginAdmin } from '@/services/auth.js'
+import { showAlert } from '@/utils/swal.js'
 
 const router = useRouter()
 const username = ref('')
@@ -12,6 +13,11 @@ const errorMessage = ref('')
 const handleLogin = async () => {
   if (!username.value || !password.value) {
     errorMessage.value = 'Silakan isi username dan password.'
+    await showAlert({
+      icon: 'warning',
+      title: 'Login gagal',
+      text: 'Silakan isi username dan password.'
+    })
     return
   }
 
@@ -19,10 +25,19 @@ const handleLogin = async () => {
     isLoading.value = true
     errorMessage.value = ''
     await loginAdmin(username.value, password.value)
-    // Berhasil login, arahkan ke dashboard admin
+    await showAlert({
+      icon: 'success',
+      title: 'Login berhasil',
+      text: 'Selamat datang di dashboard admin.'
+    })
     router.push('/admin/dashboard')
   } catch (err) {
     errorMessage.value = err.message || 'Username atau password tidak sesuai.'
+    await showAlert({
+      icon: 'error',
+      title: 'Login gagal',
+      text: errorMessage.value
+    })
   } finally {
     isLoading.value = false
   }
